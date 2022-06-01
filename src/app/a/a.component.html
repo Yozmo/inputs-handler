@@ -1,0 +1,16 @@
+<h3>Examplul asta, si al 2-lea presupune ca ai n inputuri (in cazul asta 3), si primul mereu trebuie pus. Altfel pe celelalte 2 nu le poti da</h3>
+<h3>Pentru mai multa flexibilitate vezi exemplul 3</h3>
+<h4>In caz ca inputurile vrei sa le dai din cea mai inepartata componenta din ierarhie</h4>
+
+<h5>A comp</h5>
+<b-component
+  [firstInput]="valueFromAComponentFirst"
+  [secondInput]="valueFromAComponentSecond"
+  [thirdInput]="valueFromAComponentThird"
+></b-component>
+
+<button (click)="changeFirstValue()">Update First Value</button>
+
+<button [routerLink]="'/second-example'">Second example</button>
+
+<button [routerLink]="'/third-example'">Third example</button>
