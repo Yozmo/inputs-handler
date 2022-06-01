@@ -30,6 +30,7 @@ function multipleInputsFactory(
     secondInputHandler: SecondValueInputDirective,
   ]
 ): MultipleInputsHandler {
+  console.log('--- Handler Instance ---')
   const changes$  = merge(...handlers.map(({changes$}) => changes$ || NEVER)).pipe(takeUntil(destroy$));
 
   changes$.subscribe(() => {

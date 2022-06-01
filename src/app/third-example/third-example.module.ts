@@ -8,6 +8,7 @@ import { AThirdExampleComponent } from './a-third-example/a-third-example.compon
 import { BThirdExampleComponent } from './b-third-example/b-third-example.component';
 import { CThirdExampleComponent } from './c-third-example/c-third-example.component';
 import { DThirdExampleComponent } from './d-third-example/d-third-example.component';
+import { AnyComponent } from './any/any.component';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { DThirdExampleComponent } from './d-third-example/d-third-example.compon
     AThirdExampleComponent,
     BThirdExampleComponent,
     CThirdExampleComponent,
-    DThirdExampleComponent
+    DThirdExampleComponent,
+    AnyComponent
   ],
   imports: [
     CommonModule,
