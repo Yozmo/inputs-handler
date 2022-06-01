@@ -1,27 +1,33 @@
 # InputExamples
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.3.7.
+### Scopul exemplului
 
-## Development server
+In mod normal, folosesti `@Input()` atunci cand ai relatie de `Parinte -> Copil`, si copilul este direct in parinte.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Exista si situatii cand ierarhia e mai mare, de exemplu `A -> B -> C -> D`, si tu vrei sa trimiti date din `A` in `D`. Cu metoda de mai sus ar trebuii practic sa pui cate un @Input() in toate componentele pana ajungi la componenta in care e si `D`.
 
-## Code scaffolding
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```
+  // a-component-template
+  <b-component [value]="inputValue"></b-component>
+  
+    // b-component-template
+  <c-component [value]="inputValue"></c-component> -> nu foloseste inputul, doar il paseaza mai departe
+  
+    // c-component-template
+  <d-component [value]="inputValue"></d-component> -> nu foloseste inputul, doar il paseaza mai departe
+```
 
-## Build
+### Solutii
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+1. Service
 
-## Running unit tests
+Exista o metoda folosita, unde te folosesti de un serviciu in care ai un EventEmitter(), pe care il folosesti in parinte sa emiti date, iar copilul asculta pentru ele. Metoda este ok, dar totusi esti limitat (adaugi functii in plus in .ts-ul parintelui / poate valorile pe care vrei sa le pasezi spre copil le ai din template - luate cu | async pipe, in cazul asta adaugi o subscriptie in plus in .ts ca sa ai access la date).
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+2. Directive
 
-## Running end-to-end tests
+Asta e cea mai flexibila metoda pentru a pasa date. Ce o face atat de flexibila, e Dependency Injection system. Declari o directiva cu inputurile de care ai nevoie, o folosesti pe orice componenta, iar dupa aceea, directiva o injectezi acolo unde ai nevoie de date.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Datorita la Depenency Injection Tree, poti pasa date de oriunde din ierarhie, de pe orice ramura.
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Singurul lucru la care trebuie sa ai grija la metoda asta, e acela ca daca folosesti `ChangeDetectionStrategy.OnPush` (si ai face bine sa folosesti asta) trebuie sa faci trigger la Change Detection manual. Motivul pentru asta este acela ca folosind directiva de la un alt nivel din ierarhie, directiva nu stie nimic de componenta care o va injecta, deci Angular nu poate sa faca trigger la change detection asa cum o face in mod normal atunci cand ai in cazul cand ai `Parinte -> Copil` si valoarea inputului se modifica in parinte.
